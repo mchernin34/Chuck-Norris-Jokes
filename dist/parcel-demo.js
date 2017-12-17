@@ -65,17 +65,23 @@ require = (function (modules, cache, entry) {
 
   // Override the current require with this new one
   return newRequire;
-})({4:[function(require,module,exports) {
+})({3:[function(require,module,exports) {
 module.exports = {
-  getOne: function() {}
+  getOne: function() {
+    fetch('http://api.icndb.com/jokes/random')
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+      })
+  }
 }
 
 },{}],2:[function(require,module,exports) {
 const jokes = require('./jokes')
 
-console.log(jokes.name)
+console.log(jokes.getOne())
 
-},{"./jokes":4}],0:[function(require,module,exports) {
+},{"./jokes":3}],0:[function(require,module,exports) {
 var global = (1, eval)('this');
 var OldModule = module.bundle.Module;
 function Module() {
@@ -93,7 +99,7 @@ function Module() {
 module.bundle.Module = Module;
 
 if (!module.bundle.parent) {
-  var ws = new WebSocket('ws://localhost:58010/');
+  var ws = new WebSocket('ws://localhost:59449/');
   ws.onmessage = function(event) {
     var data = JSON.parse(event.data);
 
