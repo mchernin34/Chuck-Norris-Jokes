@@ -65,7 +65,9 @@ require = (function (modules, cache, entry) {
 
   // Override the current require with this new one
   return newRequire;
-})({11:[function(require,module,exports) {
+})({4:[function(require,module,exports) {
+
+},{}],11:[function(require,module,exports) {
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -78,7 +80,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],57:[function(require,module,exports) {
+},{}],33:[function(require,module,exports) {
 /*!
  * Determine if an object is a Buffer
  *
@@ -406,7 +408,7 @@ module.exports = {
   trim: trim
 };
 
-},{"./helpers/bind":11,"is-buffer":57}],25:[function(require,module,exports) {
+},{"./helpers/bind":11,"is-buffer":33}],17:[function(require,module,exports) {
 
 // shim for using process in browser
 var process = module.exports = {};
@@ -593,78 +595,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],55:[function(require,module,exports) {
-'use strict';
-
-/**
- * Update an Error with the specified config, error code, and response.
- *
- * @param {Error} error The error to update.
- * @param {Object} config The config.
- * @param {string} [code] The error code (for example, 'ECONNABORTED').
- * @param {Object} [request] The request.
- * @param {Object} [response] The response.
- * @returns {Error} The error.
- */
-module.exports = function enhanceError(error, config, code, request, response) {
-  error.config = config;
-  if (code) {
-    error.code = code;
-  }
-  error.request = request;
-  error.response = response;
-  return error;
-};
-
-},{}],39:[function(require,module,exports) {
-'use strict';
-
-var enhanceError = require('./enhanceError');
-
-/**
- * Create an Error with the specified message, config, error code, request and response.
- *
- * @param {string} message The error message.
- * @param {Object} config The config.
- * @param {string} [code] The error code (for example, 'ECONNABORTED').
- * @param {Object} [request] The request.
- * @param {Object} [response] The response.
- * @returns {Error} The created error.
- */
-module.exports = function createError(message, config, code, request, response) {
-  var error = new Error(message);
-  return enhanceError(error, config, code, request, response);
-};
-
-},{"./enhanceError":55}],35:[function(require,module,exports) {
-'use strict';
-
-var createError = require('./createError');
-
-/**
- * Resolve or reject a Promise based on response status.
- *
- * @param {Function} resolve A function that resolves the promise.
- * @param {Function} reject A function that rejects the promise.
- * @param {object} response The response.
- */
-module.exports = function settle(resolve, reject, response) {
-  var validateStatus = response.config.validateStatus;
-  // Note: status is not exposed by XDomainRequest
-  if (!response.status || !validateStatus || validateStatus(response.status)) {
-    resolve(response);
-  } else {
-    reject(createError(
-      'Request failed with status code ' + response.status,
-      response.config,
-      null,
-      response.request,
-      response
-    ));
-  }
-};
-
-},{"./createError":39}],36:[function(require,module,exports) {
+},{}],22:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -734,7 +665,78 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":9}],37:[function(require,module,exports) {
+},{"./../utils":9}],32:[function(require,module,exports) {
+'use strict';
+
+/**
+ * Update an Error with the specified config, error code, and response.
+ *
+ * @param {Error} error The error to update.
+ * @param {Object} config The config.
+ * @param {string} [code] The error code (for example, 'ECONNABORTED').
+ * @param {Object} [request] The request.
+ * @param {Object} [response] The response.
+ * @returns {Error} The error.
+ */
+module.exports = function enhanceError(error, config, code, request, response) {
+  error.config = config;
+  if (code) {
+    error.code = code;
+  }
+  error.request = request;
+  error.response = response;
+  return error;
+};
+
+},{}],26:[function(require,module,exports) {
+'use strict';
+
+var enhanceError = require('./enhanceError');
+
+/**
+ * Create an Error with the specified message, config, error code, request and response.
+ *
+ * @param {string} message The error message.
+ * @param {Object} config The config.
+ * @param {string} [code] The error code (for example, 'ECONNABORTED').
+ * @param {Object} [request] The request.
+ * @param {Object} [response] The response.
+ * @returns {Error} The created error.
+ */
+module.exports = function createError(message, config, code, request, response) {
+  var error = new Error(message);
+  return enhanceError(error, config, code, request, response);
+};
+
+},{"./enhanceError":32}],23:[function(require,module,exports) {
+'use strict';
+
+var createError = require('./createError');
+
+/**
+ * Resolve or reject a Promise based on response status.
+ *
+ * @param {Function} resolve A function that resolves the promise.
+ * @param {Function} reject A function that rejects the promise.
+ * @param {object} response The response.
+ */
+module.exports = function settle(resolve, reject, response) {
+  var validateStatus = response.config.validateStatus;
+  // Note: status is not exposed by XDomainRequest
+  if (!response.status || !validateStatus || validateStatus(response.status)) {
+    resolve(response);
+  } else {
+    reject(createError(
+      'Request failed with status code ' + response.status,
+      response.config,
+      null,
+      response.request,
+      response
+    ));
+  }
+};
+
+},{"./createError":26}],24:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -789,7 +791,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":9}],38:[function(require,module,exports) {
+},{"./../utils":9}],25:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -859,7 +861,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":9}],40:[function(require,module,exports) {
+},{"./../utils":9}],27:[function(require,module,exports) {
 'use strict';
 
 // btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
@@ -897,7 +899,7 @@ function btoa(input) {
 
 module.exports = btoa;
 
-},{}],41:[function(require,module,exports) {
+},{}],28:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -952,7 +954,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":9}],27:[function(require,module,exports) {
+},{"./../utils":9}],18:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -1127,7 +1129,7 @@ module.exports = function xhrAdapter(config) {
     request.send(requestData);
   });
 };
-},{"./../utils":9,"./../core/settle":35,"./../helpers/buildURL":36,"./../helpers/parseHeaders":37,"./../helpers/isURLSameOrigin":38,"../core/createError":39,"./../helpers/btoa":40,"./../helpers/cookies":41}],28:[function(require,module,exports) {
+},{"./../utils":9,"./../helpers/buildURL":22,"./../core/settle":23,"./../helpers/parseHeaders":24,"./../helpers/isURLSameOrigin":25,"../core/createError":26,"./../helpers/btoa":27,"./../helpers/cookies":28}],19:[function(require,module,exports) {
 'use strict';
 
 var utils = require('../utils');
@@ -1236,7 +1238,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-},{"./utils":9,"process":25,"./adapters/http":27,"./helpers/normalizeHeaderName":28,"./adapters/xhr":27}],31:[function(require,module,exports) {
+},{"./utils":9,"process":17,"./adapters/http":18,"./helpers/normalizeHeaderName":19,"./adapters/xhr":18}],20:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -1290,7 +1292,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":9}],49:[function(require,module,exports) {
+},{"./../utils":9}],29:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -1319,7 +1321,7 @@ module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],50:[function(require,module,exports) {
+},{}],30:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -1335,7 +1337,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],51:[function(require,module,exports) {
+},{}],31:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -1351,7 +1353,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],32:[function(require,module,exports) {
+},{}],21:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -1439,7 +1441,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"./../utils":9,"../defaults":10,"./transformData":49,"../cancel/isCancel":15,"./../helpers/isAbsoluteURL":50,"./../helpers/combineURLs":51}],12:[function(require,module,exports) {
+},{"./../utils":9,"../defaults":10,"./transformData":29,"../cancel/isCancel":15,"./../helpers/isAbsoluteURL":30,"./../helpers/combineURLs":31}],12:[function(require,module,exports) {
 'use strict';
 
 var defaults = require('./../defaults');
@@ -1520,7 +1522,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"./../defaults":10,"./../utils":9,"./InterceptorManager":31,"./dispatchRequest":32}],13:[function(require,module,exports) {
+},{"./../defaults":10,"./../utils":9,"./InterceptorManager":20,"./dispatchRequest":21}],14:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -1541,7 +1543,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],14:[function(require,module,exports) {
+},{}],13:[function(require,module,exports) {
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -1600,7 +1602,7 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":13}],16:[function(require,module,exports) {
+},{"./Cancel":14}],16:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -1629,7 +1631,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],7:[function(require,module,exports) {
+},{}],8:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./utils');
@@ -1683,9 +1685,9 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./utils":9,"./defaults":10,"./helpers/bind":11,"./core/Axios":12,"./cancel/Cancel":13,"./cancel/CancelToken":14,"./cancel/isCancel":15,"./helpers/spread":16}],5:[function(require,module,exports) {
+},{"./utils":9,"./defaults":10,"./helpers/bind":11,"./core/Axios":12,"./cancel/CancelToken":13,"./cancel/Cancel":14,"./cancel/isCancel":15,"./helpers/spread":16}],7:[function(require,module,exports) {
 module.exports = require('./lib/axios');
-},{"./lib/axios":7}],3:[function(require,module,exports) {
+},{"./lib/axios":8}],6:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1708,15 +1710,25 @@ const jokes = exports.jokes = {
     });
   }
 };
-},{"axios":5}],2:[function(require,module,exports) {
+},{"axios":7}],2:[function(require,module,exports) {
 "use strict";
 
 var _jokes = require("./jokes");
 
+var _fs = require("fs");
+
+var _fs2 = _interopRequireDefault(_fs);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 _jokes.jokes.getOne().then(joke => {
   document.getElementById('joke').innerHTML = joke;
 });
-},{"./jokes":3}],0:[function(require,module,exports) {
+
+const copy = "&copy; Copyright 2018 Michael Chernin";
+
+document.getElementById('copy').innerHTML = copy;
+},{"fs":4,"./jokes":6}],0:[function(require,module,exports) {
 var global = (1, eval)('this');
 var OldModule = module.bundle.Module;
 function Module() {
@@ -1734,7 +1746,7 @@ function Module() {
 module.bundle.Module = Module;
 
 if (!module.bundle.parent) {
-  var ws = new WebSocket('ws://localhost:65185/');
+  var ws = new WebSocket('ws://localhost:51287/');
   ws.onmessage = function(event) {
     var data = JSON.parse(event.data);
 
