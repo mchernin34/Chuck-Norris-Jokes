@@ -1,3 +1,5 @@
 const jokes = require('./jokes')
 
-console.log(jokes.getOne())
+jokes.getOne().then(joke => {
+  document.getElementById('joke').innerHTML = joke
+})

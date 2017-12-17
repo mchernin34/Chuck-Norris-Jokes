@@ -68,18 +68,22 @@ require = (function (modules, cache, entry) {
 })({3:[function(require,module,exports) {
 module.exports = {
   getOne: function() {
-    fetch('http://api.icndb.com/jokes/random')
-      .then(res => res.json())
-      .then(data => {
-        console.log(data)
-      })
+    return new Promise((resolve, reject) => {
+      fetch('http://api.icndb.com/jokes/random')
+        .then(res => res.json())
+        .then(data => {
+          resolve(data.value.joke)
+        })
+    })
   }
 }
 
 },{}],2:[function(require,module,exports) {
 const jokes = require('./jokes')
 
-console.log(jokes.getOne())
+jokes.getOne().then(joke => {
+  document.getElementById('joke').innerHTML = joke
+})
 
 },{"./jokes":3}],0:[function(require,module,exports) {
 var global = (1, eval)('this');
@@ -99,7 +103,7 @@ function Module() {
 module.bundle.Module = Module;
 
 if (!module.bundle.parent) {
-  var ws = new WebSocket('ws://localhost:59449/');
+  var ws = new WebSocket('ws://localhost:60404/');
   ws.onmessage = function(event) {
     var data = JSON.parse(event.data);
 
