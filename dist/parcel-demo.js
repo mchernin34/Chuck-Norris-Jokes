@@ -66,25 +66,28 @@ require = (function (modules, cache, entry) {
   // Override the current require with this new one
   return newRequire;
 })({3:[function(require,module,exports) {
-module.exports = {
-  getOne: function() {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+const jokes = exports.jokes = {
+  getOne: function () {
     return new Promise((resolve, reject) => {
-      fetch('http://api.icndb.com/jokes/random')
-        .then(res => res.json())
-        .then(data => {
-          resolve(data.value.joke)
-        })
-    })
+      fetch('http://api.icndb.com/jokes/random').then(res => res.json()).then(data => {
+        resolve(data.value.joke);
+      });
+    });
   }
-}
-
+};
 },{}],2:[function(require,module,exports) {
-const jokes = require('./jokes')
+"use strict";
 
-jokes.getOne().then(joke => {
-  document.getElementById('joke').innerHTML = joke
-})
+var _jokes = require("./jokes");
 
+_jokes.jokes.getOne().then(joke => {
+  document.getElementById('joke').innerHTML = joke;
+});
 },{"./jokes":3}],0:[function(require,module,exports) {
 var global = (1, eval)('this');
 var OldModule = module.bundle.Module;
