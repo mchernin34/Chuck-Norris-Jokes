@@ -1,0 +1,1 @@
+{"dependencies":[{"name":"./jokes","loc":{"line":1,"column":22}}],"generated":{"js":"const jokes = require('./jokes')\n\nconsole.log(jokes.name)\n"},"hash":"6bbc4902426317396b100c6351f06491"}
