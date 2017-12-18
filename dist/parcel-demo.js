@@ -65,9 +65,9 @@ require = (function (modules, cache, entry) {
 
   // Override the current require with this new one
   return newRequire;
-})({4:[function(require,module,exports) {
+})({3:[function(require,module,exports) {
 
-},{}],11:[function(require,module,exports) {
+},{}],14:[function(require,module,exports) {
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -80,7 +80,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],33:[function(require,module,exports) {
+},{}],34:[function(require,module,exports) {
 /*!
  * Determine if an object is a Buffer
  *
@@ -408,7 +408,7 @@ module.exports = {
   trim: trim
 };
 
-},{"./helpers/bind":11,"is-buffer":33}],17:[function(require,module,exports) {
+},{"./helpers/bind":14,"is-buffer":34}],17:[function(require,module,exports) {
 
 // shim for using process in browser
 var process = module.exports = {};
@@ -595,7 +595,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],22:[function(require,module,exports) {
+},{}],23:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -665,7 +665,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":9}],32:[function(require,module,exports) {
+},{"./../utils":9}],33:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -688,7 +688,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],26:[function(require,module,exports) {
+},{}],27:[function(require,module,exports) {
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -708,7 +708,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":32}],23:[function(require,module,exports) {
+},{"./enhanceError":33}],24:[function(require,module,exports) {
 'use strict';
 
 var createError = require('./createError');
@@ -736,7 +736,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":26}],24:[function(require,module,exports) {
+},{"./createError":27}],25:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -791,7 +791,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":9}],25:[function(require,module,exports) {
+},{"./../utils":9}],26:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -861,7 +861,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":9}],27:[function(require,module,exports) {
+},{"./../utils":9}],28:[function(require,module,exports) {
 'use strict';
 
 // btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
@@ -899,7 +899,7 @@ function btoa(input) {
 
 module.exports = btoa;
 
-},{}],28:[function(require,module,exports) {
+},{}],29:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -954,7 +954,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":9}],18:[function(require,module,exports) {
+},{"./../utils":9}],19:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -1129,7 +1129,7 @@ module.exports = function xhrAdapter(config) {
     request.send(requestData);
   });
 };
-},{"./../utils":9,"./../helpers/buildURL":22,"./../core/settle":23,"./../helpers/parseHeaders":24,"./../helpers/isURLSameOrigin":25,"../core/createError":26,"./../helpers/btoa":27,"./../helpers/cookies":28}],19:[function(require,module,exports) {
+},{"./../utils":9,"./../helpers/buildURL":23,"./../core/settle":24,"./../helpers/parseHeaders":25,"./../helpers/isURLSameOrigin":26,"../core/createError":27,"./../helpers/btoa":28,"./../helpers/cookies":29}],20:[function(require,module,exports) {
 'use strict';
 
 var utils = require('../utils');
@@ -1238,7 +1238,116 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-},{"./utils":9,"process":17,"./adapters/http":18,"./helpers/normalizeHeaderName":19,"./adapters/xhr":18}],20:[function(require,module,exports) {
+},{"./utils":9,"process":17,"./adapters/http":19,"./adapters/xhr":19,"./helpers/normalizeHeaderName":20}],12:[function(require,module,exports) {
+'use strict';
+
+/**
+ * A `Cancel` is an object that is thrown when an operation is canceled.
+ *
+ * @class
+ * @param {string=} message The message.
+ */
+function Cancel(message) {
+  this.message = message;
+}
+
+Cancel.prototype.toString = function toString() {
+  return 'Cancel' + (this.message ? ': ' + this.message : '');
+};
+
+Cancel.prototype.__CANCEL__ = true;
+
+module.exports = Cancel;
+
+},{}],11:[function(require,module,exports) {
+'use strict';
+
+var Cancel = require('./Cancel');
+
+/**
+ * A `CancelToken` is an object that can be used to request cancellation of an operation.
+ *
+ * @class
+ * @param {Function} executor The executor function.
+ */
+function CancelToken(executor) {
+  if (typeof executor !== 'function') {
+    throw new TypeError('executor must be a function.');
+  }
+
+  var resolvePromise;
+  this.promise = new Promise(function promiseExecutor(resolve) {
+    resolvePromise = resolve;
+  });
+
+  var token = this;
+  executor(function cancel(message) {
+    if (token.reason) {
+      // Cancellation has already been requested
+      return;
+    }
+
+    token.reason = new Cancel(message);
+    resolvePromise(token.reason);
+  });
+}
+
+/**
+ * Throws a `Cancel` if cancellation has been requested.
+ */
+CancelToken.prototype.throwIfRequested = function throwIfRequested() {
+  if (this.reason) {
+    throw this.reason;
+  }
+};
+
+/**
+ * Returns an object that contains a new `CancelToken` and a function that, when called,
+ * cancels the `CancelToken`.
+ */
+CancelToken.source = function source() {
+  var cancel;
+  var token = new CancelToken(function executor(c) {
+    cancel = c;
+  });
+  return {
+    token: token,
+    cancel: cancel
+  };
+};
+
+module.exports = CancelToken;
+
+},{"./Cancel":12}],13:[function(require,module,exports) {
+'use strict';
+
+/**
+ * Syntactic sugar for invoking a function and expanding an array for arguments.
+ *
+ * Common use case would be to use `Function.prototype.apply`.
+ *
+ *  ```js
+ *  function f(x, y, z) {}
+ *  var args = [1, 2, 3];
+ *  f.apply(null, args);
+ *  ```
+ *
+ * With `spread` this example can be re-written.
+ *
+ *  ```js
+ *  spread(function(x, y, z) {})([1, 2, 3]);
+ *  ```
+ *
+ * @param {Function} callback
+ * @returns {Function}
+ */
+module.exports = function spread(callback) {
+  return function wrap(arr) {
+    return callback.apply(null, arr);
+  };
+};
+
+},{}],21:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -1292,7 +1401,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":9}],29:[function(require,module,exports) {
+},{"./../utils":9}],30:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -1314,14 +1423,14 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../utils":9}],15:[function(require,module,exports) {
+},{"./../utils":9}],16:[function(require,module,exports) {
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],30:[function(require,module,exports) {
+},{}],31:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -1337,7 +1446,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],31:[function(require,module,exports) {
+},{}],32:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -1353,7 +1462,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],21:[function(require,module,exports) {
+},{}],22:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -1441,7 +1550,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"./../utils":9,"../defaults":10,"./transformData":29,"../cancel/isCancel":15,"./../helpers/isAbsoluteURL":30,"./../helpers/combineURLs":31}],12:[function(require,module,exports) {
+},{"./../utils":9,"../defaults":10,"./transformData":30,"../cancel/isCancel":16,"./../helpers/isAbsoluteURL":31,"./../helpers/combineURLs":32}],15:[function(require,module,exports) {
 'use strict';
 
 var defaults = require('./../defaults');
@@ -1522,116 +1631,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"./../defaults":10,"./../utils":9,"./InterceptorManager":20,"./dispatchRequest":21}],14:[function(require,module,exports) {
-'use strict';
-
-/**
- * A `Cancel` is an object that is thrown when an operation is canceled.
- *
- * @class
- * @param {string=} message The message.
- */
-function Cancel(message) {
-  this.message = message;
-}
-
-Cancel.prototype.toString = function toString() {
-  return 'Cancel' + (this.message ? ': ' + this.message : '');
-};
-
-Cancel.prototype.__CANCEL__ = true;
-
-module.exports = Cancel;
-
-},{}],13:[function(require,module,exports) {
-'use strict';
-
-var Cancel = require('./Cancel');
-
-/**
- * A `CancelToken` is an object that can be used to request cancellation of an operation.
- *
- * @class
- * @param {Function} executor The executor function.
- */
-function CancelToken(executor) {
-  if (typeof executor !== 'function') {
-    throw new TypeError('executor must be a function.');
-  }
-
-  var resolvePromise;
-  this.promise = new Promise(function promiseExecutor(resolve) {
-    resolvePromise = resolve;
-  });
-
-  var token = this;
-  executor(function cancel(message) {
-    if (token.reason) {
-      // Cancellation has already been requested
-      return;
-    }
-
-    token.reason = new Cancel(message);
-    resolvePromise(token.reason);
-  });
-}
-
-/**
- * Throws a `Cancel` if cancellation has been requested.
- */
-CancelToken.prototype.throwIfRequested = function throwIfRequested() {
-  if (this.reason) {
-    throw this.reason;
-  }
-};
-
-/**
- * Returns an object that contains a new `CancelToken` and a function that, when called,
- * cancels the `CancelToken`.
- */
-CancelToken.source = function source() {
-  var cancel;
-  var token = new CancelToken(function executor(c) {
-    cancel = c;
-  });
-  return {
-    token: token,
-    cancel: cancel
-  };
-};
-
-module.exports = CancelToken;
-
-},{"./Cancel":14}],16:[function(require,module,exports) {
-'use strict';
-
-/**
- * Syntactic sugar for invoking a function and expanding an array for arguments.
- *
- * Common use case would be to use `Function.prototype.apply`.
- *
- *  ```js
- *  function f(x, y, z) {}
- *  var args = [1, 2, 3];
- *  f.apply(null, args);
- *  ```
- *
- * With `spread` this example can be re-written.
- *
- *  ```js
- *  spread(function(x, y, z) {})([1, 2, 3]);
- *  ```
- *
- * @param {Function} callback
- * @returns {Function}
- */
-module.exports = function spread(callback) {
-  return function wrap(arr) {
-    return callback.apply(null, arr);
-  };
-};
-
-},{}],8:[function(require,module,exports) {
+},{"./../defaults":10,"./../utils":9,"./InterceptorManager":21,"./dispatchRequest":22}],8:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./utils');
@@ -1685,7 +1685,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./utils":9,"./defaults":10,"./helpers/bind":11,"./core/Axios":12,"./cancel/CancelToken":13,"./cancel/Cancel":14,"./cancel/isCancel":15,"./helpers/spread":16}],7:[function(require,module,exports) {
+},{"./utils":9,"./defaults":10,"./cancel/CancelToken":11,"./cancel/Cancel":12,"./helpers/spread":13,"./helpers/bind":14,"./core/Axios":15,"./cancel/isCancel":16}],7:[function(require,module,exports) {
 module.exports = require('./lib/axios');
 },{"./lib/axios":8}],6:[function(require,module,exports) {
 "use strict";
@@ -1728,7 +1728,7 @@ _jokes.jokes.getOne().then(joke => {
 const copy = "&copy; Copyright 2018 Michael Chernin";
 
 document.getElementById('copy').innerHTML = copy;
-},{"fs":4,"./jokes":6}],0:[function(require,module,exports) {
+},{"fs":3,"./jokes":6}],0:[function(require,module,exports) {
 var global = (1, eval)('this');
 var OldModule = module.bundle.Module;
 function Module() {
@@ -1746,7 +1746,7 @@ function Module() {
 module.bundle.Module = Module;
 
 if (!module.bundle.parent) {
-  var ws = new WebSocket('ws://localhost:51287/');
+  var ws = new WebSocket('ws://localhost:54500/');
   ws.onmessage = function(event) {
     var data = JSON.parse(event.data);
 
