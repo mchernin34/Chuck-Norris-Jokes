@@ -1,0 +1,1 @@
+{"dependencies":[{"name":"/Users/mchernin/Sites/parcel-demo/variables.scss","includedInParent":true},{"name":"_css_loader"}],"generated":{"css":"body {\n  background-color: #f4f4f4; }\n","js":"\n        var reloadCSS = require('_css_loader');\n        module.hot.dispose(reloadCSS);\n        module.hot.accept(reloadCSS);\n      "},"hash":"c65cfaa9eb009bc725621df9c46b221d"}
