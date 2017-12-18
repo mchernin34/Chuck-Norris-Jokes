@@ -65,9 +65,9 @@ require = (function (modules, cache, entry) {
 
   // Override the current require with this new one
   return newRequire;
-})({3:[function(require,module,exports) {
+})({4:[function(require,module,exports) {
 
-},{}],10:[function(require,module,exports) {
+},{}],11:[function(require,module,exports) {
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -80,7 +80,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],32:[function(require,module,exports) {
+},{}],33:[function(require,module,exports) {
 /*!
  * Determine if an object is a Buffer
  *
@@ -103,7 +103,7 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],8:[function(require,module,exports) {
+},{}],9:[function(require,module,exports) {
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -408,7 +408,7 @@ module.exports = {
   trim: trim
 };
 
-},{"./helpers/bind":10,"is-buffer":32}],16:[function(require,module,exports) {
+},{"./helpers/bind":11,"is-buffer":33}],17:[function(require,module,exports) {
 
 // shim for using process in browser
 var process = module.exports = {};
@@ -595,7 +595,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],31:[function(require,module,exports) {
+},{}],32:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -618,7 +618,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],25:[function(require,module,exports) {
+},{}],26:[function(require,module,exports) {
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -638,7 +638,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":31}],21:[function(require,module,exports) {
+},{"./enhanceError":32}],22:[function(require,module,exports) {
 'use strict';
 
 var createError = require('./createError');
@@ -666,7 +666,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":25}],22:[function(require,module,exports) {
+},{"./createError":26}],23:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -736,7 +736,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":8}],23:[function(require,module,exports) {
+},{"./../utils":9}],24:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -791,7 +791,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":8}],24:[function(require,module,exports) {
+},{"./../utils":9}],25:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -861,7 +861,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":8}],26:[function(require,module,exports) {
+},{"./../utils":9}],27:[function(require,module,exports) {
 'use strict';
 
 // btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
@@ -899,7 +899,7 @@ function btoa(input) {
 
 module.exports = btoa;
 
-},{}],27:[function(require,module,exports) {
+},{}],28:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -954,7 +954,7 @@ module.exports = (
   })()
 );
 
-},{"./../utils":8}],17:[function(require,module,exports) {
+},{"./../utils":9}],18:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -1129,7 +1129,7 @@ module.exports = function xhrAdapter(config) {
     request.send(requestData);
   });
 };
-},{"./../utils":8,"./../core/settle":21,"./../helpers/buildURL":22,"./../helpers/parseHeaders":23,"./../helpers/isURLSameOrigin":24,"../core/createError":25,"./../helpers/btoa":26,"./../helpers/cookies":27}],18:[function(require,module,exports) {
+},{"./../utils":9,"./../core/settle":22,"./../helpers/buildURL":23,"./../helpers/parseHeaders":24,"./../helpers/isURLSameOrigin":25,"../core/createError":26,"./../helpers/btoa":27,"./../helpers/cookies":28}],19:[function(require,module,exports) {
 'use strict';
 
 var utils = require('../utils');
@@ -1143,7 +1143,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":8}],9:[function(require,module,exports) {
+},{"../utils":9}],10:[function(require,module,exports) {
 var process = require("process");
 'use strict';
 
@@ -1238,7 +1238,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-},{"./utils":8,"process":16,"./adapters/http":17,"./helpers/normalizeHeaderName":18,"./adapters/xhr":17}],19:[function(require,module,exports) {
+},{"./utils":9,"process":17,"./adapters/http":18,"./helpers/normalizeHeaderName":19,"./adapters/xhr":18}],20:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -1292,7 +1292,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":8}],28:[function(require,module,exports) {
+},{"./../utils":9}],29:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -1314,14 +1314,14 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../utils":8}],14:[function(require,module,exports) {
+},{"./../utils":9}],15:[function(require,module,exports) {
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],29:[function(require,module,exports) {
+},{}],30:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -1337,7 +1337,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],30:[function(require,module,exports) {
+},{}],31:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -1353,7 +1353,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],20:[function(require,module,exports) {
+},{}],21:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./../utils');
@@ -1441,7 +1441,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"./../utils":8,"../defaults":9,"./transformData":28,"../cancel/isCancel":14,"./../helpers/isAbsoluteURL":29,"./../helpers/combineURLs":30}],11:[function(require,module,exports) {
+},{"./../utils":9,"../defaults":10,"./transformData":29,"../cancel/isCancel":15,"./../helpers/isAbsoluteURL":30,"./../helpers/combineURLs":31}],12:[function(require,module,exports) {
 'use strict';
 
 var defaults = require('./../defaults');
@@ -1522,7 +1522,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"./../defaults":9,"./../utils":8,"./InterceptorManager":19,"./dispatchRequest":20}],12:[function(require,module,exports) {
+},{"./../defaults":10,"./../utils":9,"./InterceptorManager":20,"./dispatchRequest":21}],13:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -1543,7 +1543,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],13:[function(require,module,exports) {
+},{}],14:[function(require,module,exports) {
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -1602,7 +1602,7 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":12}],15:[function(require,module,exports) {
+},{"./Cancel":13}],16:[function(require,module,exports) {
 'use strict';
 
 /**
@@ -1631,7 +1631,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],7:[function(require,module,exports) {
+},{}],8:[function(require,module,exports) {
 'use strict';
 
 var utils = require('./utils');
@@ -1685,9 +1685,9 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./utils":8,"./defaults":9,"./helpers/bind":10,"./core/Axios":11,"./cancel/Cancel":12,"./cancel/CancelToken":13,"./cancel/isCancel":14,"./helpers/spread":15}],6:[function(require,module,exports) {
+},{"./utils":9,"./defaults":10,"./helpers/bind":11,"./core/Axios":12,"./cancel/Cancel":13,"./cancel/CancelToken":14,"./cancel/isCancel":15,"./helpers/spread":16}],7:[function(require,module,exports) {
 module.exports = require('./lib/axios');
-},{"./lib/axios":7}],5:[function(require,module,exports) {
+},{"./lib/axios":8}],6:[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1710,7 +1710,7 @@ const jokes = exports.jokes = {
     });
   }
 };
-},{"axios":6}],2:[function(require,module,exports) {
+},{"axios":7}],3:[function(require,module,exports) {
 "use strict";
 
 var _jokes = require("./jokes");
@@ -1728,7 +1728,7 @@ _jokes.jokes.getOne().then(joke => {
 const copy = "&copy; Copyright 2018 Michael Chernin";
 
 document.getElementById('copy').innerHTML = copy;
-},{"fs":3,"./jokes":5}],0:[function(require,module,exports) {
+},{"fs":4,"./jokes":6}],0:[function(require,module,exports) {
 var global = (1, eval)('this');
 var OldModule = module.bundle.Module;
 function Module() {
@@ -1746,7 +1746,7 @@ function Module() {
 module.bundle.Module = Module;
 
 if (!module.bundle.parent) {
-  var ws = new WebSocket('ws://localhost:54564/');
+  var ws = new WebSocket('ws://localhost:54624/');
   ws.onmessage = function(event) {
     var data = JSON.parse(event.data);
 
@@ -1844,4 +1844,4 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.require, id)
   });
 }
-},{}]},{},[0,2])
+},{}]},{},[0,3])
